@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Quiz Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            margin: 0;
+            padding: 0;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 600px;
+            background: #2d2d2d;
+            margin: 50px auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .question {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #667eea;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5563d6;
+        }
+
+        .result {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simple Quiz</h1>
+    <div id="quiz">
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+    <div class="result" id="result"></div>
+</div>
+
+<footer>
+    Created as a School Project
+</footer>
+
+<script>
+    const quizData = [
+        {
+            question: "What does HTML stand for?",
+            options: [
+                "Hyper Text Markup Language",
+                "High Text Machine Language",
+                "Hyperlinks Text Mark Language",
+                "Home Tool Markup Language"
+            ],
+            answer: 0
+        },
+        {
+            question: "Which language is used for styling web pages?",
+            options: ["HTML", "JQuery", "CSS", "XML"],
+            answer: 2
+        },
+        {
+            question: "Which is used to add interactivity to websites?",
+            options: ["CSS", "HTML", "Python", "JavaScript"],
+            answer: 3
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const q = quizData[currentQuestion];
+        document.getElementById("question").innerText = q.question;
+
+        const optionsDiv = document.getElementById("options");
+        optionsDiv.innerHTML = "";
+
+        q.options.forEach((option, index) => {
+            optionsDiv.innerHTML += `
+                <label>
+                    <input type="radio" name="option" value="${index}">
+                    ${option}
+                </label>
+            `;
+        });
+    }
+
+    function nextQuestion() {
+        const selected = document.querySelector('input[name="option"]:checked');
+
+        if (!selected) {
+            alert("Please select an answer!");
+            return;
+        }
+
+        if (parseInt(selected.value) === quizData[currentQuestion].answer) {
+            score++;
+        }
+
+        currentQuestion++;
+
+        if (currentQuestion < quizData.length) {
+            loadQuestion();
+        } else {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").innerText =
+                `You scored ${score} out of ${quizData.length}`;
+        }
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
